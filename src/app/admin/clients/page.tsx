@@ -170,10 +170,16 @@ export default function ClientsPage() {
           ))}
         </div>
       ) : filteredClients.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {filteredClients.map((client) => (
-            <div 
+            <motion.div 
               key={client.id}
+              variants={item}
               className="group bg-[#111116] border border-white/5 hover:border-[#f5c542]/30 rounded-2xl p-6 transition-all duration-500 hover:shadow-2xl hover:shadow-black/50 flex flex-col"
             >
               <div className="flex items-start justify-between mb-4">
@@ -231,13 +237,18 @@ export default function ClientsPage() {
                   <span className="sr-only md:not-sr-only md:text-xs uppercase">Live</span>
                 </Link>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-[#111116] border border-dashed border-white/10 rounded-2xl animate-in fade-in duration-500">
-          <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6 border border-white/5">
-            <Users className="w-10 h-10 text-white/10" />
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex flex-col items-center justify-center py-20 px-4 text-center bg-[#111116] border border-dashed border-white/10 rounded-2xl"
+        >
+          <div className="w-24 h-24 bg-[#f5c542]/5 rounded-full flex items-center justify-center mb-6 border border-[#f5c542]/10 relative">
+            <div className="absolute inset-0 bg-[#f5c542]/20 blur-2xl rounded-full opacity-20"></div>
+            <Users className="w-12 h-12 text-[#f5c542]/40" />
           </div>
           <h2 className="text-2xl font-black text-white mb-2">No journey maps found</h2>
           <p className="text-white/40 max-w-xs mb-10 leading-relaxed">
@@ -245,11 +256,11 @@ export default function ClientsPage() {
           </p>
           <Link 
             href="/admin/clients/new"
-            className="bg-[#f5c542] hover:bg-[#e5b532] text-black font-black px-10 py-4 rounded-2xl transition-all shadow-xl shadow-[#f5c542]/10"
+            className="bg-[#f5c542] hover:bg-[#e5b532] text-black font-black px-10 py-4 rounded-2xl transition-all shadow-xl shadow-[#f5c542]/10 hover:scale-105 active:scale-95"
           >
             Create Your First Map
           </Link>
-        </div>
+        </motion.div>
       )}
     </div>
   );
