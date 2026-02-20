@@ -21,8 +21,8 @@ interface JourneyPlayerProps {
 
 // A single continuous cinematic easing — smooth and predictable
 const cinematicFlyEase = (t: number): number => {
-  // Ease in-out quintic: extreme smoothness at the edges
-  return t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
+  // Cubic in-out for a more balanced velocity profile than quintic
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 };
 
 // Gentle orbit easing — used for the post-landing slow rotation
