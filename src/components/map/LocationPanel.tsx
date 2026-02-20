@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Play, ZoomIn, ChevronUp } from 'lucide-react';
+import Image from 'next/image';
 import type { Location, Media } from '@/lib/types';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
