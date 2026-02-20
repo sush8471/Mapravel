@@ -11,7 +11,7 @@ import { TimelineBar } from './TimelineBar';
 import { JourneyPlayer } from './JourneyPlayer';
 import { IntroAnimation } from './IntroAnimation';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Copy, X, Twitter } from 'lucide-react';
+import { Compass, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface MapViewProps {
