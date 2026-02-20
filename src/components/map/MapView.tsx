@@ -269,18 +269,19 @@ export function MapView({ locations, client, media }: MapViewProps) {
     if (isRevealing && mapLoaded && mapRef.current && locations.length > 0 && !revealFired.current) {
       revealFired.current = true;
       const firstLocation = locations[0];
-      setTimeout(() => {
-        if (!mapRef.current) return;
-        mapRef.current.flyTo({
-          center: [firstLocation.longitude, firstLocation.latitude],
-          zoom: 4.5,
-          pitch: 55,
-          bearing: -15,
-          duration: 9000,
-          essential: true,
-          easing: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, // easeInOutCubic
-        });
-      }, 0);
+        setTimeout(() => {
+          if (!mapRef.current) return;
+          mapRef.current.flyTo({
+            center: [firstLocation.longitude, firstLocation.latitude],
+            zoom: 4.5,
+            pitch: 55,
+            bearing: -15,
+            duration: 8000,
+            essential: true,
+            easing: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+          });
+        }, 0);
+
 
       const map = mapRef.current;
       const handleZoom = () => {
