@@ -398,10 +398,11 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
               journey_music_url: data.journey_music_url || ''
             });
           }
-    } catch (error: any) {
-      console.error('Error fetching client:', error);
-      showToast('error', 'Error fetching client: ' + (error.message || 'Unknown error'));
-      router.push('/admin/clients');
+      } catch (error: any) {
+        console.error('Error fetching client:', error);
+        toast.error('Error fetching client: ' + (error.message || 'Unknown error'));
+        router.push('/admin/clients');
+
     } finally {
       setLoading(false);
     }
