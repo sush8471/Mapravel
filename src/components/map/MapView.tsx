@@ -137,6 +137,7 @@ export function MapView({ locations, client, media }: MapViewProps) {
 
     map.on('load', () => {
       setMapLoaded(true);
+      setLoadProgress(100);
 
       map.setFog({
         range: [0.5, 10],
@@ -197,6 +198,14 @@ export function MapView({ locations, client, media }: MapViewProps) {
         };
         (map as any)._updateLineProgress = updateLineProgress;
       }
+    });
+
+    map.on('styledataloading', () => setLoadProgress(30));
+    map.on('styledata', () => setLoadProgress(70));
+    
+    map.on('move', () => {
+      setMapBearing(map.getBearing());
+      setMapPitch(map.getPitch());
     });
 
     return () => {
