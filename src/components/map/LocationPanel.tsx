@@ -330,28 +330,32 @@ export function LocationPanel({
               className="fixed inset-0 bg-black/40 z-[60] md:hidden"
             />
 
-            <motion.div
-              key="mobile-sheet"
-              drag="y"
-              dragConstraints={{ top: 0, bottom: 0 }}
-              dragElastic={{ top: 0.05, bottom: 0.3 }}
-              onDragEnd={(_, info) => {
-                if (info.offset.y < -60) setIsExpanded(true);
-                if (info.offset.y > 120) onClose();
-              }}
-              initial={{ y: '100%' }}
-              animate={{ y: isExpanded ? '0%' : '52%' }}
-              exit={{ y: '100%' }}
-              transition={{ type: 'spring', damping: 34, stiffness: 300 }}
-              className={cn(
-                'fixed bottom-0 left-0 right-0 md:hidden',
-                'h-[95%]',
-                'bg-[#0a0a0f]/97 backdrop-blur-2xl',
-                'border-t border-white/10',
-                'z-[70] shadow-2xl flex flex-col overflow-hidden',
-                isExpanded ? 'rounded-t-[1.5rem]' : 'rounded-t-[2rem]',
-              )}
-            >
+              <motion.div
+                key="mobile-sheet"
+                drag="y"
+                dragConstraints={{ top: 0, bottom: 0 }}
+                dragElastic={{ top: 0.05, bottom: 0.3 }}
+                onDragEnd={(_, info) => {
+                  if (info.offset.y < -60) setIsExpanded(true);
+                  if (info.offset.y > 120) onClose();
+                }}
+                initial={{ y: '100%' }}
+                animate={{ 
+                  y: isExpanded ? '0%' : '52%',
+                  borderTopLeftRadius: isExpanded ? '1.5rem' : '2rem',
+                  borderTopRightRadius: isExpanded ? '1.5rem' : '2rem'
+                }}
+                exit={{ y: '100%' }}
+                transition={{ type: 'spring', damping: 34, stiffness: 300 }}
+                className={cn(
+                  'fixed bottom-0 left-0 right-0 md:hidden',
+                  'h-[95%]',
+                  'bg-[#0a0a0f]/97 backdrop-blur-2xl',
+                  'border-t border-white/10',
+                  'z-[70] shadow-2xl flex flex-col overflow-hidden',
+                )}
+              >
+
               {/* Drag handle + expand/collapse tap target */}
               <div
                 className="w-full flex flex-col items-center pt-3 pb-2 cursor-grab active:cursor-grabbing shrink-0"
