@@ -383,44 +383,6 @@ export function MapView({ locations, client, media }: MapViewProps) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentJourneyIndex, isJourneyStarted]);
 
-  // ── Helpers ───────────────────────────────────────────────────────────────
-  const getArcPoints = (start: [number, number], end: [number, number], pointsCount = 100): [number, number][] => {
-    const [startLng, startLat] = start;
-    const [endLng, endLat] = end;
-    const dx = endLng - startLng;
-    const dy = endLat - startLat;
-    const arcHeight = Math.sqrt(dx * dx + dy * dy) * 0.2;
-    return Array.from({ length: pointsCount + 1 }, (_, i) => {
-      const t = i / pointsCount;
-      return [startLng + t * dx, startLat + t * dy + 4 * arcHeight * t * (1 - t)];
-    });
-  };
-
-    const handleLocationSelect = (location: Location) => {
-      setSelectedLocation(location);
-      if (panelTimerRef.current) clearTimeout(panelTimerRef.current);
-      setIsPanelOpen(false);
-      
-      if (mapRef.current) {
-        mapRef.current.flyTo({ 
-          center: [location.longitude, location.latitude], 
-          zoom: 14, 
-          duration: 2000, 
-          essential: true,
-          pitch: 45,
-          bearing: 0
-        });
-      }
-
-      // ONLY auto-open panel in overview mode. 
-      // In journey mode, we use the flashy Explore button instead.
-      if (!isJourneyStarted) {
-        panelTimerRef.current = setTimeout(() => {
-            setIsPanelOpen(true);
-        }, 2200);
-      }
-    };
-
   // ── Journey controls ──────────────────────────────────────────────────────
   const handleStartJourney = useCallback(() => {
     setCurrentJourneyIndex(0);
