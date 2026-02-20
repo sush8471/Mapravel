@@ -240,8 +240,16 @@ export function MapView({ locations, client, media }: MapViewProps) {
     map.on('styledata', () => setLoadProgress(70));
     
     map.on('move', () => {
-      setMapBearing(map.getBearing());
-      setMapPitch(map.getPitch());
+      if (compassRef.current) {
+        compassRef.current.style.transform = `rotate(${-map.getBearing()}deg)`;
+      }
+    });
+
+    map.on('moveend', () => {
+      const b = map.getBearing();
+      const p = map.getPitch();
+      const needsReset = Math.abs(b) > 5 || Math.abs(p - (isJourneyStarted ? 45 : 0)) > 5;
+      setShowReset(needsReset);
     });
 
     return () => {
