@@ -36,37 +36,7 @@ import {
 
 import Link from 'next/link';
 import { Location, Media } from '@/lib/types';
-
-// ─── Toast ───────────────────────────────────────────────────────────────────
-type Toast = { id: number; type: 'success' | 'error'; message: string };
-
-function ToastContainer({ toasts, onRemove }: { toasts: Toast[]; onRemove: (id: number) => void }) {
-  return (
-    <div className="fixed bottom-6 right-6 z-[200] flex flex-col gap-3 pointer-events-none">
-      {toasts.map((t) => (
-        <div
-          key={t.id}
-          className={`flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-2xl border text-sm font-medium pointer-events-auto
-            animate-in slide-in-from-bottom-4 duration-300
-            ${t.type === 'success'
-              ? 'bg-[#111116] border-green-500/30 text-green-400'
-              : 'bg-[#111116] border-red-500/30 text-red-400'}`}
-        >
-          {t.type === 'success'
-            ? <CheckCircle2 className="w-4 h-4 shrink-0" />
-            : <AlertTriangle className="w-4 h-4 shrink-0" />}
-          <span>{t.message}</span>
-          <button
-            onClick={() => onRemove(t.id)}
-            className="ml-2 text-white/30 hover:text-white/60 transition-colors"
-          >
-            <X className="w-3.5 h-3.5" />
-          </button>
-        </div>
-      ))}
-    </div>
-  );
-}
+import { toast } from 'sonner';
 
 // ─── Date Picker ─────────────────────────────────────────────────────────────
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
