@@ -44,8 +44,6 @@ export function MapView({ locations, client, media }: MapViewProps) {
   const [showShareModal, setShowShareModal] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [loadProgress, setLoadProgress] = useState(0);
-  const [mapBearing, setMapBearing] = useState(0);
-  const [mapPitch, setMapPitch] = useState(0);
   const [isInteractingBlocked, setIsInteractingBlocked] = useState(true);
   const [isJourneyStarted, setIsJourneyStarted] = useState(false);
   const [currentJourneyIndex, setCurrentJourneyIndex] = useState(0);
@@ -55,7 +53,9 @@ export function MapView({ locations, client, media }: MapViewProps) {
   const [showExploreHint, setShowExploreHint] = useState(false);
   const [showArrivalFlash, setShowArrivalFlash] = useState(false);
 
-  const showReset = Math.abs(mapBearing) > 5 || Math.abs(mapPitch - (isJourneyStarted ? 45 : 0)) > 5;
+  // We'll track these with refs and only update visibility on moveend to avoid per-frame re-renders
+  const [showReset, setShowReset] = useState(false);
+  const compassRef = useRef<HTMLDivElement>(null);
 
   // ── Helpers ───────────────────────────────────────────────────────────────
   const getArcPoints = (start: [number, number], end: [number, number], pointsCount = 100): [number, number][] => {
