@@ -42,10 +42,10 @@ export function MapView({ locations, client, media }: MapViewProps) {
   const revealFired = useRef(false);
   const allArcCoordinatesRef = useRef<[number, number][]>([]);
 
+  const [isJourneyStarted, setIsJourneyStarted] = useState(false);
   const showReset = Math.abs(mapBearing) > 5 || Math.abs(mapPitch - (isJourneyStarted ? 45 : 0)) > 5;
 
   // Journey state — fully manual, user-controlled
-  const [isJourneyStarted, setIsJourneyStarted] = useState(false);
   const [currentJourneyIndex, setCurrentJourneyIndex] = useState(0);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
