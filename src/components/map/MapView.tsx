@@ -250,7 +250,7 @@ export function MapView({ locations, client, media }: MapViewProps) {
     map.on('moveend', () => {
       const b = map.getBearing();
       const p = map.getPitch();
-      const needsReset = Math.abs(b) > 5 || Math.abs(p - (isJourneyStarted ? 45 : 0)) > 5;
+      const needsReset = Math.abs(b) > 5 || Math.abs(p - (isJourneyStartedRef.current ? 45 : 0)) > 5;
       setShowReset(needsReset);
     });
 
