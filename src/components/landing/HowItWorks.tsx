@@ -42,10 +42,18 @@ function StepCard({
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
-      className="relative bg-[#0e0e16] border border-white/5 rounded-2xl p-8 flex flex-col gap-5 hover:border-[#f5c542]/20 transition-colors duration-300 group"
+      whileHover={{ 
+        y: -8, 
+        transition: { duration: 0.25 }
+      }}
+      className="relative bg-[#0e0e16] border border-white/5 rounded-2xl p-8 flex flex-col gap-5 hover:border-[#f5c542]/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] transition-all duration-300 group"
     >
+      <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+        <step.icon size={64} className="text-[#f5c542]" />
+      </div>
+
       {/* Number */}
-      <span className="text-5xl font-bold text-[#f5c542]/20 group-hover:text-[#f5c542]/30 transition-colors leading-none select-none">
+      <span className="text-6xl font-black text-[#f5c542]/10 group-hover:text-[#f5c542]/20 transition-colors leading-none select-none italic">
         {step.num}
       </span>
 
