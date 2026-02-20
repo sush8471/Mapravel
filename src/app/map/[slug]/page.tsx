@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getServiceSupabase } from '@/lib/supabase';
-import { MapView } from '@/components/map/MapView';
+import { MapPageClient } from '@/components/map/MapPageClient';
 import type { Client, Location, Media } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
@@ -39,7 +39,7 @@ export default async function MapPage({ params }: PageProps) {
   const { slug } = await params;
   const supabase = getServiceSupabase();
 
-  // Fetch client by slug — exclude sensitive fields
+  // Fetch client by slug — exclude sensitive fields (like access_password)
   const { data: client, error: clientError } = await supabase
     .from('clients')
     .select('id, name, slug, title, subtitle, bio, theme, background_music_url, journey_music_url, is_published, password_protected, created_at')
@@ -76,7 +76,7 @@ export default async function MapPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen bg-[#0a0a0f]">
-      <MapView 
+      <MapPageClient 
         client={client} 
         locations={locations || []} 
         media={media || []}
