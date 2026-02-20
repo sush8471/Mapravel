@@ -498,7 +498,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
       fetchLocations();
     } catch (error: any) {
       console.error('Save Location Error:', error);
-      showToast('error', 'Error saving milestone: ' + (error.message || error.details || 'Unknown error'));
+      toast.error( 'Error saving milestone: ' + (error.message || error.details || 'Unknown error'));
     } finally {
       setLocationSaving(false);
     }
@@ -520,7 +520,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
       setLocationToDelete(null);
     } catch (error: any) {
       console.error('Error deleting location:', error);
-      showToast('error', 'Error deleting milestone: ' + (error.message || 'Unknown error'));
+      toast.error( 'Error deleting milestone: ' + (error.message || 'Unknown error'));
     } finally {
       setLocationDeleting(false);
     }
@@ -555,7 +555,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
       toast.success('Background music uploaded!');
     } catch (error: any) {
       console.error('Music Upload Error:', error);
-      showToast('error', 'Error uploading music: ' + (error.message || error.details || 'Unknown error'));
+      toast.error( 'Error uploading music: ' + (error.message || error.details || 'Unknown error'));
     } finally {
       setMusicUploading(false);
     }
@@ -590,7 +590,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
       toast.success('Journey music uploaded!');
     } catch (error: any) {
       console.error('Journey Music Upload Error:', error);
-      showToast('error', 'Error uploading journey music: ' + (error.message || error.details || 'Unknown error'));
+      toast.error( 'Error uploading journey music: ' + (error.message || error.details || 'Unknown error'));
     } finally {
       setJourneyMusicUploading(false);
     }
@@ -607,7 +607,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
         const maxSize = isVideo ? 50 * 1024 * 1024 : 5 * 1024 * 1024;
         
         if (file.size > maxSize) {
-          showToast('error', `${file.name} is too large. Max ${isVideo ? '50MB for video' : '5MB for images'}.`);
+          toast.error( `${file.name} is too large. Max ${isVideo ? '50MB for video' : '5MB for images'}.`);
           continue;
         }
 
@@ -644,7 +644,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
       toast.success(`${files.length > 1 ? files.length + ' files' : 'File'} uploaded successfully!`);
     } catch (error: any) {
       console.error('Media Upload Error:', error);
-      showToast('error', 'Upload failed: ' + (error.message || error.details || 'Unknown error'));
+      toast.error( 'Upload failed: ' + (error.message || error.details || 'Unknown error'));
     } finally {
       setUploading(null);
     }
@@ -671,7 +671,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
       toast.success('Media deleted.');
     } catch (error: any) {
       console.error('Error deleting media:', error);
-      showToast('error', 'Error deleting media: ' + (error.message || 'Unknown error'));
+      toast.error( 'Error deleting media: ' + (error.message || 'Unknown error'));
     }
   };
 
@@ -689,7 +689,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
       toast.success('Changes saved successfully!');
     } catch (error: any) {
       console.error('Update Error:', error);
-      showToast('error', 'Error saving: ' + (error.message || error.details || 'Unknown error'));
+      toast.error( 'Error saving: ' + (error.message || error.details || 'Unknown error'));
     } finally {
       setSaving(false);
     }
@@ -709,7 +709,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
       toast.success(nextState ? 'Journey published!' : 'Journey unpublished.');
     } catch (error: any) {
       console.error('Error toggling publish:', error);
-      showToast('error', 'Error: ' + (error.message || 'Unknown error'));
+      toast.error( 'Error: ' + (error.message || 'Unknown error'));
     } finally {
       setSaving(false);
     }
@@ -727,7 +727,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
       router.push('/admin/clients');
     } catch (error: any) {
       console.error('Error deleting client:', error);
-      showToast('error', 'Error deleting client: ' + (error.message || 'Unknown error'));
+      toast.error( 'Error deleting client: ' + (error.message || 'Unknown error'));
       setDeleting(false);
     }
   };
