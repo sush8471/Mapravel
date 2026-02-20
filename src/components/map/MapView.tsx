@@ -46,6 +46,8 @@ export function MapView({ locations, client, media }: MapViewProps) {
   const [loadProgress, setLoadProgress] = useState(0);
   const [isInteractingBlocked, setIsInteractingBlocked] = useState(true);
   const [isJourneyStarted, setIsJourneyStarted] = useState(false);
+  const isJourneyStartedRef = useRef(false);
+  useEffect(() => { isJourneyStartedRef.current = isJourneyStarted; }, [isJourneyStarted]);
   const [currentJourneyIndex, setCurrentJourneyIndex] = useState(0);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
