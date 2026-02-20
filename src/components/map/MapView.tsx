@@ -728,8 +728,8 @@ export function MapView({ locations, client, media }: MapViewProps) {
               title="Reset View"
             >
               <div 
+                ref={compassRef}
                 className="transition-transform duration-500 ease-out"
-                style={{ transform: `rotate(${-mapBearing}deg)` }}
               >
                 <Compass className="w-5 h-5" />
               </div>
