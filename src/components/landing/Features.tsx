@@ -52,12 +52,22 @@ function FeatureCard({
       initial={{ opacity: 0, y: 32 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.55, delay: (index % 3) * 0.1, ease: "easeOut" }}
-      className="group bg-[#111116] border border-white/5 rounded-2xl p-6 flex flex-col gap-4 hover:border-[#f5c542]/25 hover:shadow-[0_0_30px_rgba(245,197,66,0.06)] transition-all duration-300"
+      whileHover={{ y: -8, transition: { duration: 0.2 } }}
+      className="group bg-[#111116] border border-white/5 rounded-2xl p-6 flex flex-col gap-4 hover:border-[#f5c542]/25 hover:shadow-[0_20px_40px_rgba(245,197,66,0.08)] transition-all duration-300"
     >
-      <span className="text-3xl">{f.emoji}</span>
+      <motion.span 
+        whileHover={{ scale: 1.2, rotate: 10 }}
+        className="text-3xl"
+      >
+        {f.emoji}
+      </motion.span>
       <div className="space-y-1.5">
-        <h3 className="text-base font-semibold text-white">{f.title}</h3>
-        <p className="text-sm text-gray-400 leading-relaxed">{f.desc}</p>
+        <h3 className="text-base font-semibold text-white group-hover:text-[#f5c542] transition-colors">
+          {f.title}
+        </h3>
+        <p className="text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
+          {f.desc}
+        </p>
       </div>
     </motion.div>
   );
