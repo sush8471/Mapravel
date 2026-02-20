@@ -691,6 +691,67 @@ export function MapView({ locations, client, media }: MapViewProps) {
       <div ref={mapContainerRef} className="absolute inset-0" style={{ width: '100%', height: '100%' }} />
       <div className="map-vignette" />
 
+      {/* ── Style Loading Progress ────────────────────────────────────────── */}
+      <AnimatePresence>
+        {loadProgress < 100 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed top-0 left-0 right-0 h-1 z-[100] bg-white/10"
+          >
+            <motion.div
+              className="h-full bg-[#f5c542] shadow-[0_0_10px_rgba(245,197,66,0.5)]"
+              initial={{ width: '0%' }}
+              animate={{ width: `${loadProgress}%` }}
+              transition={{ duration: 0.5 }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Compass / Reset View ───────────────────────────────────────────── */}
+      <AnimatePresence>
+        {showReset && !showIntro && (
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="fixed left-6 top-1/2 -translate-y-1/2 z-[40] flex flex-col gap-2"
+          >
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => {
+                if (!mapRef.current) return;
+                mapRef.current.easeTo({
+                  bearing: 0,
+                  pitch: isJourneyStarted ? 45 : 0,
+                  duration: 1000,
+                  easing: (t) => t * (2 - t)
+                });
+              }}
+              className="p-3 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[#f5c542] shadow-xl group"
+              title="Reset View"
+            >
+              <div 
+                className="transition-transform duration-500 ease-out"
+                style={{ transform: `rotate(${-mapBearing}deg)` }}
+              >
+                <Compass className="w-5 h-5" />
+              </div>
+              <motion.div 
+                initial={{ opacity: 0, x: 10 }}
+                whileHover={{ opacity: 1, x: 25 }}
+                className="absolute left-full ml-2 px-3 py-1 bg-black/60 backdrop-blur-md border border-white/10 rounded-md text-[10px] uppercase tracking-widest text-white whitespace-nowrap pointer-events-none"
+              >
+                Reset Orientation
+              </motion.div>
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* ── Audio elements ────────────────────────────────────────────────── */}
       {client.background_music_url && <audio ref={introAudioRef} src={client.background_music_url} loop />}
       {client.journey_music_url && <audio ref={journeyAudioRef} src={client.journey_music_url} loop />}
