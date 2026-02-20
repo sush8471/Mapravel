@@ -78,12 +78,19 @@ function PricingCard({
       {/* Glow effect on hover */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl bg-gradient-to-b from-[#f5c542]/5 to-transparent" />
       
-      {/* Popular badge */}
-      {tier.popular && (
-        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#f5c542] text-[#0a0a0f] text-xs font-bold px-4 py-1 rounded-full whitespace-nowrap">
-          Most Popular
-        </div>
-      )}
+        {/* Popular badge */}
+        {tier.popular && (
+          <>
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#f5c542] text-[#0a0a0f] text-xs font-bold px-4 py-1 rounded-full whitespace-nowrap z-20">
+              Most Popular
+            </div>
+            <motion.div
+              animate={{ x: ['-100%', '200%'] }}
+              transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 3, ease: 'easeInOut' }}
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 pointer-events-none"
+            />
+          </>
+        )}
 
       {/* Header */}
       <div className="mb-6">
