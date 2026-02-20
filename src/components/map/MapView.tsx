@@ -29,24 +29,13 @@ export function MapView({ locations, client, media }: MapViewProps) {
   const journeyAudioRef = useRef<HTMLAudioElement | null>(null);
   const fadeIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const markersRef = useRef<{ [key: string]: HTMLDivElement }>({});
-
-  // UI state
-  const [showIntro, setShowIntro] = useState(true);
-  const [isRevealing, setIsRevealing] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
-  const [showShareModal, setShowShareModal] = useState(false);
-  const [mapLoaded, setMapLoaded] = useState(false);
-  const [loadProgress, setLoadProgress] = useState(0);
-  const [mapBearing, setMapBearing] = useState(0);
-  const [mapPitch, setMapPitch] = useState(0);
-  const [isInteractingBlocked, setIsInteractingBlocked] = useState(true);
-  const isFirstReveal = useRef(true);
-  const revealFired = useRef(false);
   const allArcCoordinatesRef = useRef<[number, number][]>([]);
   const overlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const overlayHideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const panelTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const exploreHintTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isFirstReveal = useRef(true);
+  const revealFired = useRef(false);
 
   // UI state
   const [showIntro, setShowIntro] = useState(true);
@@ -65,9 +54,6 @@ export function MapView({ locations, client, media }: MapViewProps) {
   const [showOverlay, setShowOverlay] = useState(false);
   const [showExploreHint, setShowExploreHint] = useState(false);
   const [showArrivalFlash, setShowArrivalFlash] = useState(false);
-
-  const isFirstReveal = useRef(true);
-  const revealFired = useRef(false);
 
   const showReset = Math.abs(mapBearing) > 5 || Math.abs(mapPitch - (isJourneyStarted ? 45 : 0)) > 5;
 
