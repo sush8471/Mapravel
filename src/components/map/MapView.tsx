@@ -581,25 +581,10 @@ export function MapView({ locations, client, media }: MapViewProps) {
                   : loc.date_from || loc.date_to}
               </motion.p>
 
-              {/* Location counter */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: words.length * 0.12 + 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="relative mt-4 flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/15 bg-black/30 backdrop-blur-sm"
-              >
-                <span className="text-[#f5c542] text-xs font-bold tracking-[0.2em] uppercase">
-                  {currentJourneyIndex + 1}
-                </span>
-                <span className="text-white/30 text-xs">/</span>
-                <span className="text-white/50 text-xs font-medium tracking-[0.15em]">
-                  {locations.length}
-                </span>
               </motion.div>
-            </motion.div>
-          );
-        })()}
-      </AnimatePresence>
+            );
+          })()}
+        </AnimatePresence>
 
       {/* ── Flashy Explore hint (appears after camera lands) ──────────────── */}
       <AnimatePresence>
