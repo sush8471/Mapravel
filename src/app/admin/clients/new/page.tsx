@@ -56,10 +56,11 @@ export default function NewClientPage() {
       if (error) throw error;
 
       router.push(`/admin/clients/${data.id}`);
-    } catch (error: any) {
-      console.error('Error creating client:', error);
-      alert('Error creating client: ' + error.message);
-    } finally {
+      } catch (error: any) {
+        console.error('Error creating client:', error);
+        toast.error('Error creating client: ' + error.message);
+      } finally {
+
       setLoading(false);
     }
   };
