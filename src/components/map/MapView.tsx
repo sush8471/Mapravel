@@ -564,7 +564,7 @@ export function MapView({ locations, client, media }: MapViewProps) {
                       delay: i * 0.12,
                       ease: [0.22, 1, 0.36, 1],
                     }}
-                    className="text-3xl md:text-6xl font-bold text-white drop-shadow-2xl leading-tight tracking-tight"
+                    className="text-3xl md:text-6xl font-serif font-bold text-white drop-shadow-2xl leading-tight tracking-tight italic"
                   >
                     {word}
                   </motion.span>
