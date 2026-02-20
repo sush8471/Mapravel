@@ -236,8 +236,6 @@ function PanelContent({
           ))}
         </motion.div>
       )}
-
-      </motion.div>
     </div>
   );
 }
