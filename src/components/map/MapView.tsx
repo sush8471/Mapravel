@@ -247,15 +247,16 @@ export function MapView({ locations, client, media }: MapViewProps) {
     if (!isJourneyStarted && prevJourneyStarted.current && mapRef.current && locations.length > 0) {
       setTimeout(() => {
         if (!mapRef.current) return;
-        mapRef.current.flyTo({
-          center: [locations[0].longitude, locations[0].latitude],
-          zoom: 4.5,
-          pitch: 55,
-          bearing: -15,
-          duration: 8000,
-          essential: true,
-          easing: (t) => t * (2 - t),
-        });
+          mapRef.current.flyTo({
+            center: [locations[0].longitude, locations[0].latitude],
+            zoom: 4.5,
+            pitch: 55,
+            bearing: -15,
+            duration: 8000,
+            essential: true,
+            easing: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+          });
+
       }, 300);
     }
     prevJourneyStarted.current = isJourneyStarted;
