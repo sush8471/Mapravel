@@ -51,13 +51,19 @@ function Lightbox({ item, onClose }: { item: Media; onClose: () => void }) {
               playsInline
               className="max-w-[95vw] max-h-[85vh] rounded-xl object-contain"
             />
-          ) : (
-            <img
-              src={item.url}
-              alt=""
-              className="max-w-[95vw] max-h-[85vh] rounded-xl object-contain"
-            />
-          )}
+            ) : (
+              <div className="relative w-full h-full min-h-[50vh] flex items-center justify-center">
+                <Image
+                  src={item.url}
+                  alt=""
+                  fill
+                  priority
+                  className="rounded-xl object-contain"
+                  sizes="95vw"
+                />
+              </div>
+            )}
+
         </motion.div>
       </motion.div>
     </AnimatePresence>
