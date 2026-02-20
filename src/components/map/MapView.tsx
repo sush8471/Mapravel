@@ -563,19 +563,20 @@ export function MapView({ locations, client, media }: MapViewProps) {
               {/* Word-by-word stagger with blur-to-sharp entrance */}
               <h2 className="relative flex flex-wrap justify-center gap-x-3 gap-y-1 px-6 max-w-3xl">
                 {words.map((word, i) => (
-                  <motion.span
-                    key={i}
-                    initial={{ opacity: 0, y: 22, filter: 'blur(12px)' }}
-                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    transition={{
-                      duration: 0.75,
-                      delay: i * 0.12,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    className="text-3xl md:text-6xl font-serif font-bold text-white drop-shadow-2xl leading-tight tracking-tight italic"
-                  >
-                    {word}
-                  </motion.span>
+                    <motion.span
+                      key={i}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        duration: 0.7,
+                        delay: i * 0.1,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                      className="text-3xl md:text-6xl font-serif font-bold text-white drop-shadow-2xl leading-tight tracking-tight italic"
+                    >
+                      {word}
+                    </motion.span>
+
                 ))}
               </h2>
 
