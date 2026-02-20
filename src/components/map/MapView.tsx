@@ -727,10 +727,7 @@ export function MapView({ locations, client, media }: MapViewProps) {
               className="p-3 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[#f5c542] shadow-xl group"
               title="Reset View"
             >
-              <div 
-                ref={compassRef}
-                className="transition-transform duration-500 ease-out"
-              >
+              <div ref={compassRef}>
                 <Compass className="w-5 h-5" />
               </div>
               <motion.div 
