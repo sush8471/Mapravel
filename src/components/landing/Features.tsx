@@ -52,17 +52,24 @@ function FeatureCard({
       initial={{ opacity: 0, y: 32 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.55, delay: (index % 3) * 0.1, ease: "easeOut" }}
-      whileHover={{ y: -8, transition: { duration: 0.2 } }}
-      className="group bg-[#111116] border border-white/5 rounded-2xl p-6 flex flex-col gap-4 hover:border-[#f5c542]/25 hover:shadow-[0_20px_40px_rgba(245,197,66,0.08)] transition-all duration-300"
+      whileHover={{ 
+        y: -10, 
+        scale: 1.02,
+        boxShadow: "0 25px 50px -12px rgba(245,197,66,0.15)",
+        transition: { duration: 0.25 } 
+      }}
+      className="group bg-[#111116] border border-white/5 rounded-2xl p-7 flex flex-col gap-5 hover:border-[#f5c542]/40 transition-all duration-300 relative overflow-hidden"
     >
+      <div className="absolute top-0 right-0 w-24 h-24 bg-[#f5c542]/5 blur-3xl rounded-full -mr-10 -mt-10 group-hover:bg-[#f5c542]/10 transition-colors" />
+      
       <motion.span 
-        whileHover={{ scale: 1.2, rotate: 10 }}
-        className="text-3xl"
+        whileHover={{ scale: 1.25, rotate: 12 }}
+        className="text-4xl w-14 h-14 flex items-center justify-center rounded-xl bg-white/5 group-hover:bg-[#f5c542]/10 transition-colors"
       >
         {f.emoji}
       </motion.span>
-      <div className="space-y-1.5">
-        <h3 className="text-base font-semibold text-white group-hover:text-[#f5c542] transition-colors">
+      <div className="space-y-2 relative z-10">
+        <h3 className="text-lg font-bold text-white group-hover:text-[#f5c542] transition-colors">
           {f.title}
         </h3>
         <p className="text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
