@@ -483,13 +483,13 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
           .update(locationData)
           .eq('id', editingLocation.id);
         if (error) throw error;
-        showToast('success', 'Milestone updated successfully!');
+        toast.success('Milestone updated successfully!');
       } else {
         const { error } = await supabase
           .from('locations')
           .insert([locationData]);
         if (error) throw error;
-        showToast('success', 'Milestone added successfully!');
+        toast.success('Milestone added successfully!');
       }
 
       setShowLocationModal(false);
@@ -513,7 +513,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
         .eq('id', locationToDelete);
 
       if (error) throw error;
-      showToast('success', 'Milestone deleted.');
+      toast.success('Milestone deleted.');
       fetchLocations();
       fetchMedia();
       setLocationToDelete(null);
@@ -551,7 +551,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
       if (dbError) throw dbError;
 
       setFormData(prev => ({ ...prev, background_music_url: publicUrl }));
-      showToast('success', 'Background music uploaded!');
+      toast.success('Background music uploaded!');
     } catch (error: any) {
       console.error('Music Upload Error:', error);
       showToast('error', 'Error uploading music: ' + (error.message || error.details || 'Unknown error'));
@@ -586,7 +586,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
       if (dbError) throw dbError;
 
       setFormData(prev => ({ ...prev, journey_music_url: publicUrl }));
-      showToast('success', 'Journey music uploaded!');
+      toast.success('Journey music uploaded!');
     } catch (error: any) {
       console.error('Journey Music Upload Error:', error);
       showToast('error', 'Error uploading journey music: ' + (error.message || error.details || 'Unknown error'));
@@ -640,7 +640,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
       }
     
       fetchMedia();
-      showToast('success', `${files.length > 1 ? files.length + ' files' : 'File'} uploaded successfully!`);
+      toast.success(`${files.length > 1 ? files.length + ' files' : 'File'} uploaded successfully!`);
     } catch (error: any) {
       console.error('Media Upload Error:', error);
       showToast('error', 'Upload failed: ' + (error.message || error.details || 'Unknown error'));
@@ -667,7 +667,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
       if (dbError) throw dbError;
 
       fetchMedia();
-      showToast('success', 'Media deleted.');
+      toast.success('Media deleted.');
     } catch (error: any) {
       console.error('Error deleting media:', error);
       showToast('error', 'Error deleting media: ' + (error.message || 'Unknown error'));
@@ -685,7 +685,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
         .eq('id', id);
 
       if (error) throw error;
-      showToast('success', 'Changes saved successfully!');
+      toast.success('Changes saved successfully!');
     } catch (error: any) {
       console.error('Update Error:', error);
       showToast('error', 'Error saving: ' + (error.message || error.details || 'Unknown error'));
@@ -705,7 +705,7 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
       
       if (error) throw error;
       setFormData(prev => ({ ...prev, is_published: nextState }));
-      showToast('success', nextState ? 'Journey published!' : 'Journey unpublished.');
+      toast.success(nextState ? 'Journey published!' : 'Journey unpublished.');
     } catch (error: any) {
       console.error('Error toggling publish:', error);
       showToast('error', 'Error: ' + (error.message || 'Unknown error'));
