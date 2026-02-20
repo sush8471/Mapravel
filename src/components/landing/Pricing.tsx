@@ -67,13 +67,17 @@ function PricingCard({
       initial={{ opacity: 0, y: 36 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.12, ease: "easeOut" }}
-      className={`relative flex flex-col rounded-2xl p-8 border transition-all duration-300
+      whileHover={{ y: tier.popular ? -10 : -5, transition: { duration: 0.2 } }}
+      className={`relative flex flex-col rounded-2xl p-8 border transition-all duration-500 group
         ${
           tier.popular
-            ? "bg-[#0f0f18] border-[#f5c542]/40 shadow-[0_0_50px_rgba(245,197,66,0.12)] scale-[1.02] z-10"
-            : "bg-[#0d0d14] border-white/6 hover:border-white/12"
+            ? "bg-[#0f0f18] border-[#f5c542]/40 shadow-[0_15px_60px_rgba(245,197,66,0.1)] scale-[1.02] z-10 hover:shadow-[0_25px_80px_rgba(245,197,66,0.15)]"
+            : "bg-[#0d0d14] border-white/6 hover:border-[#f5c542]/20"
         }`}
     >
+      {/* Glow effect on hover */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl bg-gradient-to-b from-[#f5c542]/5 to-transparent" />
+      
       {/* Popular badge */}
       {tier.popular && (
         <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#f5c542] text-[#0a0a0f] text-xs font-bold px-4 py-1 rounded-full whitespace-nowrap">
