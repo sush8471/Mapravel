@@ -37,25 +37,28 @@ export function MapHeader({
             {backgroundMusicUrl && (
               <>
                 <div className="w-[1px] h-3 bg-white/20 hidden sm:block" />
-                {/* Equalizer icon visible on sm+, hidden on mobile */}
-                <div className="items-center gap-1.5 hidden sm:flex">
+                  {/* Equalizer icon visible on sm+, hidden on mobile */}
+                  <div className="items-center gap-2 hidden sm:flex">
+                    {!isMuted && (
+                      <div className="equalizer">
+                        <div className="equalizer-bar" style={{ animationDelay: '0.1s', animationDuration: '0.8s' }} />
+                        <div className="equalizer-bar" style={{ animationDelay: '0.3s', animationDuration: '1.2s' }} />
+                        <div className="equalizer-bar" style={{ animationDelay: '0s', animationDuration: '0.9s' }} />
+                        <div className="equalizer-bar" style={{ animationDelay: '0.5s', animationDuration: '1.1s' }} />
+                        <div className="equalizer-bar" style={{ animationDelay: '0.2s', animationDuration: '1s' }} />
+                      </div>
+                    )}
+                    <span className="text-[10px] text-[#f5c542] uppercase tracking-[0.2em] font-medium drop-shadow-[0_0_8px_rgba(245,197,66,0.3)]">Original Score</span>
+                  </div>
+                  {/* On mobile: just the animated equalizer bars, no label */}
                   {!isMuted && (
-                    <div className="equalizer">
-                      <div className="equalizer-bar" style={{ animationDelay: '0s' }} />
-                      <div className="equalizer-bar" style={{ animationDelay: '0.2s' }} />
-                      <div className="equalizer-bar" style={{ animationDelay: '0.4s' }} />
+                    <div className="equalizer sm:hidden">
+                      <div className="equalizer-bar" style={{ animationDelay: '0.1s', animationDuration: '0.8s' }} />
+                      <div className="equalizer-bar" style={{ animationDelay: '0.3s', animationDuration: '1.2s' }} />
+                      <div className="equalizer-bar" style={{ animationDelay: '0s', animationDuration: '0.9s' }} />
                     </div>
                   )}
-                  <span className="text-[10px] text-[#f5c542] uppercase tracking-[0.2em] font-medium">Original Score</span>
-                </div>
-                {/* On mobile: just the animated equalizer bars, no label */}
-                {!isMuted && (
-                  <div className="equalizer sm:hidden">
-                    <div className="equalizer-bar" style={{ animationDelay: '0s' }} />
-                    <div className="equalizer-bar" style={{ animationDelay: '0.2s' }} />
-                    <div className="equalizer-bar" style={{ animationDelay: '0.4s' }} />
-                  </div>
-                )}
+
               </>
             )}
           </div>
