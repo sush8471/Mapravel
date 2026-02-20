@@ -12,8 +12,7 @@ import { JourneyPlayer } from './JourneyPlayer';
 import { IntroAnimation } from './IntroAnimation';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Copy, X, Twitter } from 'lucide-react';
-
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
+import { toast } from 'sonner';
 
 interface MapViewProps {
   locations: Location[];
