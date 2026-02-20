@@ -43,6 +43,33 @@ export function MapView({ locations, client, media }: MapViewProps) {
   const isFirstReveal = useRef(true);
   const revealFired = useRef(false);
   const allArcCoordinatesRef = useRef<[number, number][]>([]);
+  const overlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const overlayHideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const panelTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const exploreHintTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // UI state
+  const [showIntro, setShowIntro] = useState(true);
+  const [isRevealing, setIsRevealing] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [mapBearing, setMapBearing] = useState(0);
+  const [mapPitch, setMapPitch] = useState(0);
+  const [isInteractingBlocked, setIsInteractingBlocked] = useState(true);
+  const [isJourneyStarted, setIsJourneyStarted] = useState(false);
+  const [currentJourneyIndex, setCurrentJourneyIndex] = useState(0);
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [showExploreHint, setShowExploreHint] = useState(false);
+  const [showArrivalFlash, setShowArrivalFlash] = useState(false);
+
+  const isFirstReveal = useRef(true);
+  const revealFired = useRef(false);
+
+  const showReset = Math.abs(mapBearing) > 5 || Math.abs(mapPitch - (isJourneyStarted ? 45 : 0)) > 5;
 
   // ── Helpers ───────────────────────────────────────────────────────────────
   const getArcPoints = (start: [number, number], end: [number, number], pointsCount = 100): [number, number][] => {
@@ -81,23 +108,6 @@ export function MapView({ locations, client, media }: MapViewProps) {
       }, 2200);
     }
   };
-
-  const [isJourneyStarted, setIsJourneyStarted] = useState(false);
-  const showReset = Math.abs(mapBearing) > 5 || Math.abs(mapPitch - (isJourneyStarted ? 45 : 0)) > 5;
-
-  // Journey state — fully manual, user-controlled
-  const [currentJourneyIndex, setCurrentJourneyIndex] = useState(0);
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
-
-  // Show cinematic text overlay on arrival at each stop
-  const [showOverlay, setShowOverlay] = useState(false);
-  const [showExploreHint, setShowExploreHint] = useState(false);
-  const [showArrivalFlash, setShowArrivalFlash] = useState(false);
-  const overlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const overlayHideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const panelTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const exploreHintTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ── Audio helpers ─────────────────────────────────────────────────────────
   const FADE_STEPS = 40;
