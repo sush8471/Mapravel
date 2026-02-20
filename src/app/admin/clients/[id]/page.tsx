@@ -881,13 +881,14 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
               {formData.password_protected && (
                 <div className="space-y-2 pt-1">
                   <label className="text-xs font-medium text-white/50 ml-1 uppercase tracking-wider">Access Code</label>
-                  <input
-                    type="text"
-                    placeholder="e.g., RITIK2026"
-                    value={formData.access_password}
-                    onChange={(e) => setFormData(prev => ({ ...prev, access_password: e.target.value }))}
-                    className="w-full bg-[#111116] border border-white/10 rounded-xl px-4 py-3 text-white font-mono tracking-widest focus:outline-none focus:ring-2 focus:ring-[#f5c542]/50 transition-all placeholder:text-white/20 placeholder:font-sans placeholder:tracking-normal"
-                  />
+                    <input
+                      type="text"
+                      placeholder="e.g., RITIK2026"
+                      value={formData.access_password}
+                      onChange={(e) => setFormData(prev => ({ ...prev, access_password: e.target.value.toUpperCase() }))}
+                      className="w-full bg-[#111116] border border-white/10 rounded-xl px-4 py-3 text-white font-mono tracking-widest focus:outline-none focus:ring-2 focus:ring-[#f5c542]/50 transition-all placeholder:text-white/20 placeholder:font-sans placeholder:tracking-normal"
+                    />
+
                   <p className="text-[10px] text-white/25 ml-1">Share this code privately with {formData.name || 'the client'}. They will enter it on the access screen before seeing their journey.</p>
                 </div>
               )}
