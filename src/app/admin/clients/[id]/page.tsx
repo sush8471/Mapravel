@@ -339,14 +339,6 @@ export default function EditClientPage({ params }: { params: Promise<{ id: strin
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [toasts, setToasts] = useState<Toast[]>([]);
-  const toastId = useRef(0);
-
-  const showToast = (type: 'success' | 'error', message: string) => {
-    const id = ++toastId.current;
-    setToasts((prev) => [...prev, { id, type, message }]);
-    setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 4000);
-  };
 
   // Locations & Media State
   const [locations, setLocations] = useState<Location[]>([]);
