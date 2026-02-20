@@ -114,14 +114,21 @@ function PanelContent({
       )}
     >
       {/* Swipe hint — mobile only, partial state */}
-      {!isExpanded && (
-        <div className="md:hidden flex flex-col items-center mb-4 gap-1 pointer-events-none">
-          <ChevronUp className="w-4 h-4 text-white/30 animate-bounce" />
-          <span className="text-[10px] tracking-[0.2em] uppercase text-white/25 font-medium">
-            Swipe up to expand
-          </span>
-        </div>
-      )}
+      <AnimatePresence initial={false}>
+        {!isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0, marginBottom: 0 }}
+            animate={{ height: 'auto', opacity: 1, marginBottom: 16 }}
+            exit={{ height: 0, opacity: 0, marginBottom: 0 }}
+            className="md:hidden flex flex-col items-center gap-1 pointer-events-none overflow-hidden"
+          >
+            <ChevronUp className="w-4 h-4 text-white/30 animate-bounce" />
+            <span className="text-[10px] tracking-[0.2em] uppercase text-white/25 font-medium">
+              Swipe up to expand
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <motion.div
         variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
