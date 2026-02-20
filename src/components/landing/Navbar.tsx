@@ -28,18 +28,26 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-[#0a0a0f]/90 backdrop-blur-xl border-b border-white/5 shadow-2xl"
-            : "bg-transparent"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          {/* Logo */}
+        <motion.nav
+          initial={{ y: -80, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
+            scrolled
+              ? "bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] py-0"
+              : "bg-transparent py-2"
+          }`}
+        >
+          <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative">
+            {/* Scroll Progress Indicator */}
+            {scrolled && (
+              <motion.div
+                layoutId="nav-glow"
+                className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5c542]/40 to-transparent"
+              />
+            )}
+            
+            {/* Logo */}
           <a
             href="#"
             onClick={(e) => {
