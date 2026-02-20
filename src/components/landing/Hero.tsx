@@ -61,17 +61,57 @@ export default function Hero() {
 
         {/* Headline */}
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.12,
+                delayChildren: 0.2,
+              },
+            },
+          }}
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight mb-6"
         >
-          Your Life Is A{" "}
-          <span className="relative inline-block">
+          {["Your", "Life", "Is", "A"].map((word, i) => (
+            <motion.span
+              key={i}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              className="inline-block mr-3"
+            >
+              {word}
+            </motion.span>
+          ))}
+          <motion.span
+            variants={{
+              hidden: { opacity: 0, scale: 0.8 },
+              visible: { opacity: 1, scale: 1 },
+            }}
+            className="relative inline-block"
+          >
             <span className="text-[#f5c542]">Journey.</span>
-          </span>
+            <motion.span
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 1, duration: 0.8 }}
+              className="absolute -bottom-2 left-0 right-0 h-1 bg-[#f5c542]/30 origin-left rounded-full"
+            />
+          </motion.span>
           <br />
-          We Map It.
+          <motion.span
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            className="inline-block"
+          >
+            We Map It.
+          </motion.span>
         </motion.h1>
 
         {/* Subheading */}
