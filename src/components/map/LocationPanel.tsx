@@ -237,13 +237,6 @@ function PanelContent({
         </motion.div>
       )}
 
-      <motion.div
-        variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-        className="mt-auto pt-8"
-      >
-        <p className="text-[10px] tracking-[0.3em] uppercase text-white/20 font-medium">
-          Chapter {currentIndex + 1} of {totalLocations}
-        </p>
       </motion.div>
     </div>
   );
