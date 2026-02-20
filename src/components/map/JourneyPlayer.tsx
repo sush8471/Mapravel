@@ -91,17 +91,17 @@ export function JourneyPlayer({
       isOrbitingRef.current = false;
       map.stop(); // cleanly cancel any previous motion
 
-      map.flyTo({
-        center:   [loc.longitude, loc.latitude],
-        zoom:     sig.zoom,
-        pitch:    sig.pitch,
-        bearing:  bearingRef.current,
-        duration,
-        essential: true,
-        curve:     1.72, // Higher curve forces a more dramatic zoom-out arc
-        speed:     0.18, // Slow, deliberate cruise
-        easing:    cinematicFlyEase,
-      });
+        map.flyTo({
+          center:   [loc.longitude, loc.latitude],
+          zoom:     sig.zoom,
+          pitch:    sig.pitch,
+          bearing:  bearingRef.current,
+          duration,
+          essential: true,
+          curve:     1.55, // Slightly gentler curve than 1.72 for smoother pathing
+          easing:    cinematicFlyEase,
+        });
+
 
       // Schedule orbit to begin just as the camera eases to a stop
       orbitTimerRef.current = setTimeout(() => {
