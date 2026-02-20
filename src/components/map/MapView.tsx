@@ -34,10 +34,15 @@ export function MapView({ locations, client, media }: MapViewProps) {
   const [isMuted, setIsMuted] = useState(true);
   const [showShareModal, setShowShareModal] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [mapBearing, setMapBearing] = useState(0);
+  const [mapPitch, setMapPitch] = useState(0);
   const [isInteractingBlocked, setIsInteractingBlocked] = useState(true);
   const isFirstReveal = useRef(true);
   const revealFired = useRef(false);
   const allArcCoordinatesRef = useRef<[number, number][]>([]);
+
+  const showReset = Math.abs(mapBearing) > 5 || Math.abs(mapPitch - (isJourneyStarted ? 45 : 0)) > 5;
 
   // Journey state — fully manual, user-controlled
   const [isJourneyStarted, setIsJourneyStarted] = useState(false);
