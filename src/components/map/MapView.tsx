@@ -227,7 +227,7 @@ export function MapView({ locations, client, media }: MapViewProps) {
           bearing: -15,
           duration: 9000,
           essential: true,
-          easing: (t) => t * (2 - t),
+          easing: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, // easeInOutCubic
         });
       }, 0);
 
