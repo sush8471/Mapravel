@@ -222,7 +222,12 @@ export function MapView({ locations, client, media }: MapViewProps) {
           paint: { 'line-color': '#f5c542', 'line-width': 2, 'line-opacity': 0.4, 'line-dasharray': [2, 4] },
         });
 
+        let lastUpdateTime = 0;
         const updateLineProgress = (progress: number) => {
+          const now = Date.now();
+          if (now - lastUpdateTime < 32) return; // Throttle to ~30fps
+          lastUpdateTime = now;
+
           const totalCoords = allArcCoordinatesRef.current.length;
           const step = Math.floor(progress * totalCoords);
           const source = map.getSource('route') as mapboxgl.GeoJSONSource;
