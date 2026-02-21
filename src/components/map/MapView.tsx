@@ -169,6 +169,7 @@ export function MapView({ locations, client, media }: MapViewProps) {
       zoom: 1.5,
       projection: 'globe' as any,
       attributionControl: false,
+      antialias: true,
     });
 
     mapRef.current = map;
@@ -176,6 +177,55 @@ export function MapView({ locations, client, media }: MapViewProps) {
     map.on('load', () => {
       setMapLoaded(true);
       setLoadProgress(100);
+
+      // Add 3D Terrain
+      map.addSource('mapbox-dem', {
+        type: 'raster-dem',
+        url: 'mapbox://mapbox.mapbox-terrain-dem-v1',
+        tileSize: 512,
+        maxzoom: 14,
+      });
+      map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
+
+      // Add 3D Buildings
+      const layers = map.getStyle().layers;
+      const labelLayerId = layers?.find(
+        (layer) => layer.type === 'symbol' && (layer.layout as any)?.['text-field']
+      )?.id;
+
+      map.addLayer(
+        {
+          id: '3d-buildings',
+          source: 'composite',
+          'source-layer': 'building',
+          filter: ['==', 'extrude', 'true'],
+          type: 'fill-extrusion',
+          minzoom: 14,
+          paint: {
+            'fill-extrusion-color': '#1a1a1a',
+            'fill-extrusion-height': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              14,
+              0,
+              14.05,
+              ['get', 'height'],
+            ],
+            'fill-extrusion-base': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              14,
+              0,
+              14.05,
+              ['get', 'min_height'],
+            ],
+            'fill-extrusion-opacity': 0.8,
+          },
+        },
+        labelLayerId
+      );
 
       map.setFog({
         range: [0.5, 10],
