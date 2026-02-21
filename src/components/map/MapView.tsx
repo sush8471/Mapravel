@@ -628,30 +628,31 @@ export function MapView({ locations, client, media }: MapViewProps) {
                         delay: i * 0.1,
                         ease: [0.22, 1, 0.36, 1],
                       }}
-                      className="text-3xl md:text-6xl font-serif font-bold text-white drop-shadow-2xl leading-tight tracking-tight italic"
-                    >
-                      {word}
-                    </motion.span>
+                        className="text-3xl md:text-5xl font-serif font-bold text-white drop-shadow-2xl leading-tight tracking-tight italic"
+                      >
+                        {word}
+                      </motion.span>
 
-                ))}
-              </h2>
+                  ))}
+                </h2>
 
-              {/* Subtext (title) + Date — fades in after title completes */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: words.length * 0.12 + 0.15, ease: [0.22, 1, 0.36, 1] }}
-                className="relative flex flex-col items-center gap-1 mt-3"
-              >
-                <span className="text-white/80 text-base md:text-xl font-medium drop-shadow-lg">
-                  {loc.title}
-                </span>
-                <span className="text-[#f5c542] text-xs md:text-sm font-medium tracking-widest uppercase drop-shadow-lg">
-                  {loc.date_from && loc.date_to
-                    ? `${loc.date_from} — ${loc.date_to}`
-                    : loc.date_from || loc.date_to}
-                </span>
-              </motion.div>
+                {/* Subtext (title) + Date — fades in after title completes */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: words.length * 0.12 + 0.15, ease: [0.22, 1, 0.36, 1] }}
+                  className="relative flex items-center gap-2.5 mt-4"
+                >
+                  <span className="text-white/80 text-sm md:text-lg font-medium drop-shadow-lg">
+                    {loc.title}
+                  </span>
+                  <span className="w-1 h-1 rounded-full bg-white/20 shrink-0" />
+                  <span className="text-[#f5c542] text-xs md:text-[13px] font-bold tracking-widest uppercase drop-shadow-lg whitespace-nowrap">
+                    {loc.date_from && loc.date_to
+                      ? `${loc.date_from} — ${loc.date_to}`
+                      : loc.date_from || loc.date_to}
+                  </span>
+                </motion.div>
 
               </motion.div>
             );
