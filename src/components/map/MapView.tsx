@@ -636,23 +636,17 @@ export function MapView({ locations, client, media }: MapViewProps) {
                   ))}
                 </h2>
 
-                {/* Subtext (title) + Date — fades in after title completes */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: words.length * 0.12 + 0.15, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative flex items-center gap-2.5 mt-4"
-                >
-                  <span className="text-white/80 text-sm md:text-lg font-medium drop-shadow-lg">
-                    {loc.title}
-                  </span>
-                  <span className="w-1 h-1 rounded-full bg-white/20 shrink-0" />
-                  <span className="text-[#f5c542] text-xs md:text-[13px] font-bold tracking-widest uppercase drop-shadow-lg whitespace-nowrap">
-                    {loc.date_from && loc.date_to
-                      ? `${loc.date_from} — ${loc.date_to}`
-                      : loc.date_from || loc.date_to}
-                  </span>
-                </motion.div>
+                  {/* Subtext (title) — fades in after title completes */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, delay: words.length * 0.12 + 0.15, ease: [0.22, 1, 0.36, 1] }}
+                    className="relative flex items-center gap-2.5 mt-4"
+                  >
+                    <span className="text-white/80 text-sm md:text-lg font-medium drop-shadow-lg">
+                      {loc.title}
+                    </span>
+                  </motion.div>
 
               </motion.div>
             );
