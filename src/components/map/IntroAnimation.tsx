@@ -72,8 +72,25 @@ export function IntroAnimation({ title, subtitle, onStartRevealing, onComplete }
               </p>
               <div className="w-12 h-[1px] bg-[#f5c542]/50" />
             </motion.div>
-          </div>
-          
+            </div>
+            
+            {/* Subtle Skip Button */}
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.4 }}
+              whileHover={{ opacity: 1 }}
+              onClick={handleEnter}
+              className="absolute top-8 right-8 md:top-12 md:right-12 text-[10px] uppercase tracking-[0.2em] text-white/50 hover:text-[#f5c542] transition-all flex items-center gap-2"
+            >
+              Skip
+              <motion.span
+                animate={{ x: [0, 3, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                →
+              </motion.span>
+            </motion.button>
+
             <AnimatePresence>
               {!showButton && (
                 <motion.div 
