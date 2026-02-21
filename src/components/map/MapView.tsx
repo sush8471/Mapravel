@@ -600,7 +600,7 @@ export function MapView({ locations, client, media }: MapViewProps) {
       <AnimatePresence>
         {isJourneyStarted && showOverlay && locations[currentJourneyIndex] && (() => {
           const loc = locations[currentJourneyIndex];
-          const words = loc.title.split(' ');
+          const words = loc.location_name.split(' ');
           return (
             <motion.div
               key={`overlay-${currentJourneyIndex}`}
@@ -636,17 +636,22 @@ export function MapView({ locations, client, media }: MapViewProps) {
                 ))}
               </h2>
 
-              {/* Date — fades in after title completes */}
-              <motion.p
+              {/* Subtext (title) + Date — fades in after title completes */}
+              <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: words.length * 0.12 + 0.15, ease: [0.22, 1, 0.36, 1] }}
-                className="relative text-[#f5c542] text-sm md:text-lg font-medium tracking-widest uppercase drop-shadow-lg mt-3"
+                className="relative flex flex-col items-center gap-1 mt-3"
               >
-                {loc.date_from && loc.date_to
-                  ? `${loc.date_from} — ${loc.date_to}`
-                  : loc.date_from || loc.date_to}
-              </motion.p>
+                <span className="text-white/80 text-base md:text-xl font-medium drop-shadow-lg">
+                  {loc.title}
+                </span>
+                <span className="text-[#f5c542] text-xs md:text-sm font-medium tracking-widest uppercase drop-shadow-lg">
+                  {loc.date_from && loc.date_to
+                    ? `${loc.date_from} — ${loc.date_to}`
+                    : loc.date_from || loc.date_to}
+                </span>
+              </motion.div>
 
               </motion.div>
             );
