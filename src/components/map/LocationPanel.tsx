@@ -132,18 +132,13 @@ function PanelContent({
 
       <motion.div
         variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
-        className="mb-1"
+        className="mb-2 flex items-center gap-2.5"
       >
         <span className="text-[10px] tracking-[0.2em] uppercase text-[#f5c542] font-medium drop-shadow-md">
           {location.location_name}
         </span>
-      </motion.div>
-
-      <motion.div
-        variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
-        className="mb-2"
-      >
-        <span className="text-xs text-white/40 drop-shadow-sm">
+        <span className="w-1 h-1 rounded-full bg-white/10 shrink-0" />
+        <span className="text-[10px] tracking-[0.15em] uppercase text-[#f5c542] font-bold drop-shadow-sm opacity-70">
           {location.date_from && location.date_to
             ? `${location.date_from} — ${location.date_to}`
             : location.date_from || location.date_to}
