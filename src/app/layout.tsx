@@ -22,8 +22,19 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Da Characterz Admin",
-  description: "Interactive journey maps management",
+  title: {
+    default: "Digital Journey",
+    template: "%s | Digital Journey",
+  },
+  description: "Interactive cinematic journey maps for modern storytellers.",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Digital Journey',
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export default function RootLayout({
