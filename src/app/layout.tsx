@@ -5,6 +5,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "@/styles/map.css";
 import { VisualEditsMessenger } from "orchids-visual-edits";
 import { Toaster } from "sonner";
+import { PWARegistration } from "@/components/PWARegistration";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
