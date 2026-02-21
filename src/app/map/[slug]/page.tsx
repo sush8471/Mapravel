@@ -18,19 +18,45 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   
   const { data: client } = await supabase
     .from('clients')
-    .select('title, name, subtitle, slug')
+    .select('id, title, name, subtitle, bio, slug')
     .eq('slug', slug)
     .single();
 
   if (!client) return {};
 
+  // Fetch first available image media for the client to use as OG image
+  const { data: media } = await supabase
+    .from('media')
+    .select('url')
+    .eq('client_id', client.id)
+    .eq('type', 'image')
+    .order('created_at', { ascending: true })
+    .limit(1);
+
+  const description = client.bio || client.subtitle || client.name;
+  const imageUrl = media?.[0]?.url;
+
   return {
     title: `${client.title} | Digital Journey`,
-    description: client.subtitle || client.name,
+    description,
     openGraph: {
       title: client.title,
-      description: client.subtitle || client.name,
+      description,
       type: 'website',
+      images: imageUrl ? [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: client.title,
+        }
+      ] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: client.title,
+      description,
+      images: imageUrl ? [imageUrl] : undefined,
     },
   };
 }
