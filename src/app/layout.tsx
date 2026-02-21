@@ -45,13 +45,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased bg-[#0a0a0f] text-white`}
-          >
-            {children}
-            <Toaster position="top-right" richColors theme="dark" />
-            <VisualEditsMessenger />
-          </body>
+            <body
+              className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased bg-[#0a0a0f] text-white`}
+            >
+              {children}
+              <Toaster position="top-right" richColors theme="dark" />
+              <VisualEditsMessenger />
+              <PWARegistration />
+            </body>
 
     </html>
   );
