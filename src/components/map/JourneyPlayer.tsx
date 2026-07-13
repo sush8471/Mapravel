@@ -12,6 +12,14 @@ function haptic(ms = 12) {
   }
 }
 
+function isMobileDevice(): boolean {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return false;
+  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const isCoarse = window.matchMedia('(pointer: coarse)').matches;
+  const isSmall = window.innerWidth <= 768;
+  return isTouch && (isCoarse || isSmall);
+}
+
 interface JourneyPlayerProps {
   locations: Location[];
   mapRef: React.MutableRefObject<mapboxgl.Map | null>;
@@ -93,6 +101,12 @@ export function JourneyPlayer({
     return () => mediaQuery.removeEventListener('change', listener);
   }, []);
 
+  // Mobile detection for performance tuning
+  const isMobileRef = useRef(false);
+  useEffect(() => {
+    isMobileRef.current = isMobileDevice();
+  }, []);
+
   const clearTimers = () => {
     if (flyTimerRef.current)   { clearTimeout(flyTimerRef.current);   flyTimerRef.current   = null; }
     if (orbitTimerRef.current) { clearTimeout(orbitTimerRef.current); orbitTimerRef.current = null; }
@@ -119,15 +133,19 @@ export function JourneyPlayer({
     isOrbitingRef.current = false;
     map.stop(); // cleanly cancel any previous motion
 
+    const isMobile = isMobileRef.current;
+    // Clamp pitch on mobile — high pitch + terrain is the heaviest GPU combo
+    const mobilePitch = isMobile ? Math.max(30, sig.pitch - 25) : sig.pitch;
+
     if (prefersReducedMotion) {
       setIsFlying(false);
       map.jumpTo({
         center:   [loc.longitude, loc.latitude],
         zoom:     sig.zoom,
-        pitch:    sig.pitch,
+        pitch:    mobilePitch,
         bearing:  bearingRef.current,
       });
-      startOrbit(map, bearingRef.current);
+      if (!isMobile) startOrbit(map, bearingRef.current);
       onFlightComplete?.(true);
       return;
     }
@@ -138,21 +156,23 @@ export function JourneyPlayer({
     map.flyTo({
       center:   [loc.longitude, loc.latitude],
       zoom:     sig.zoom,
-      pitch:    sig.pitch,
+      pitch:    mobilePitch,
       bearing:  bearingRef.current,
-      duration,
+      duration: isMobile ? Math.min(duration, 3500) : duration,
       essential: true,
-      curve:     1.55, // Slightly gentler curve than 1.72 for smoother pathing
+      curve:     isMobile ? 1.3 : 1.55, // gentler curve on mobile = less GPU strain
       easing:    cinematicFlyEase,
     });
 
     // Schedule orbit to begin just as the camera eases to a stop
+    // SKIP orbit entirely on mobile — it's a 9s continuous GPU drain
+    const flyDuration = isMobile ? Math.min(duration, 3500) : duration;
     orbitTimerRef.current = setTimeout(() => {
       if (!mapRef.current || !isStarted) return;
       setIsFlying(false);
-      startOrbit(mapRef.current, bearingRef.current);
+      if (!isMobile) startOrbit(mapRef.current, bearingRef.current);
       onFlightComplete?.(false);
-    }, duration - 100); // reduced delay for tighter transition
+    }, flyDuration - 100);
   };
 
   // Implement tap-to-skip directly on the Mapbox canvas
@@ -222,7 +242,9 @@ export function JourneyPlayer({
     const sig = CAMERA_SIGNATURES[0];
 
     // Slightly longer flight for the first dramatic arrival
-    flyToStop(loc, sig, FLY_DURATION + 800);
+    // On mobile: keep it tight to avoid thermal throttling during sustained GPU load
+    const firstDuration = isMobileRef.current ? 4000 : FLY_DURATION + 800;
+    flyToStop(loc, sig, firstDuration);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isStarted]);
 
@@ -240,7 +262,7 @@ export function JourneyPlayer({
           className="fixed bottom-[calc(14%+env(safe-area-inset-bottom))] md:bottom-10 left-1/2 -translate-x-1/2 z-[75] flex flex-col items-center gap-2 pointer-events-none"
         >
           {/* Slim glass capsule — barely-there background */}
-          <div className="flex items-center gap-3 pointer-events-auto bg-black/15 backdrop-blur-sm rounded-full py-1.5 px-4">
+          <div className={"flex items-center gap-3 pointer-events-auto rounded-full py-1.5 px-4 " + (isMobileRef.current ? "bg-black/40" : "bg-black/15 backdrop-blur-sm")}>
             <motion.button
               whileTap={{ scale: 0.8 }}
               onClick={onPrev}

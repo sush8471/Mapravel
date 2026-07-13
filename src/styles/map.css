@@ -108,3 +108,16 @@
   }
 }
 
+/* Reduce compositor strain on mobile: kill continuous marker keyframe animations */
+@media (max-width: 767px) {
+  .marker-pulse {
+    animation: none;
+    box-shadow: 0 0 10px #f5c542;
+  }
+  .marker-pulse::after {
+    animation: none;
+    opacity: 0.5;
+    transform: scale(1.5);
+  }
+}
+

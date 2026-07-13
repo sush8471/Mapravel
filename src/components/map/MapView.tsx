@@ -23,12 +23,18 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 function isLowPowerDevice(): boolean {
   if (typeof navigator === 'undefined') return false;
   const cores = navigator.hardwareConcurrency || 8;
-  // deviceMemory is Chrome/Android-only (undefined on iOS Safari, which is
-  // generally fine on GPU anyway) — treat missing value as "unknown, assume ok"
   const memory = (navigator as any).deviceMemory as number | undefined;
   if (cores <= 4) return true;
   if (memory !== undefined && memory <= 4) return true;
   return false;
+}
+
+function isMobileDevice(): boolean {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return false;
+  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const isCoarse = window.matchMedia('(pointer: coarse)').matches;
+  const isSmall = window.innerWidth <= 768;
+  return isTouch && (isCoarse || isSmall);
 }
 
 interface MapViewProps {
@@ -99,6 +105,7 @@ export function MapView({ locations, client, media }: MapViewProps) {
   const compassRef = useRef<HTMLDivElement>(null);
   const targetCenterRef = useRef<[number, number]>([0, 20]);
   const isLowPowerRef = useRef(false);
+  const isMobileRef = useRef(false);
 
   // ── Helpers ───────────────────────────────────────────────────────────────
   const getArcPoints = (start: [number, number], end: [number, number], pointsCount = 100): [number, number][] => {
@@ -119,12 +126,13 @@ export function MapView({ locations, client, media }: MapViewProps) {
     setIsPanelOpen(false);
     
     if (mapRef.current) {
+      const isMobile = isMobileRef.current;
       mapRef.current.flyTo({ 
         center: [location.longitude, location.latitude], 
         zoom: 14, 
-        duration: 2000, 
+        duration: isMobile ? 1200 : 2000, 
         essential: true,
-        pitch: 45,
+        pitch: isMobile ? 30 : 45,
         bearing: 0
       });
     }
@@ -204,6 +212,7 @@ export function MapView({ locations, client, media }: MapViewProps) {
     if (!mapContainerRef.current || mapRef.current) return;
 
     isLowPowerRef.current = isLowPowerDevice();
+    isMobileRef.current = isMobileDevice();
 
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
@@ -213,8 +222,8 @@ export function MapView({ locations, client, media }: MapViewProps) {
       projection: 'globe' as any,
       attributionControl: false,
       // Antialiasing on WebGL is a flat GPU tax on every frame — skip it on
-      // devices that are already going to struggle with terrain/buildings.
-      antialias: !isLowPowerRef.current,
+      // low-power devices AND all mobile devices.
+      antialias: !isLowPowerRef.current && !isMobileRef.current,
     });
 
     mapRef.current = map;
@@ -327,7 +336,9 @@ export function MapView({ locations, client, media }: MapViewProps) {
         let lastUpdateTime = 0;
         const updateLineProgress = (progress: number) => {
           const now = Date.now();
-          if (now - lastUpdateTime < 32) return; // Throttle to ~30fps
+          // Throttle more aggressively on mobile (~12fps) to free GPU for flyTo
+          const throttleMs = isMobileRef.current ? 80 : 32;
+          if (now - lastUpdateTime < throttleMs) return;
           lastUpdateTime = now;
 
           const totalCoords = allArcCoordinatesRef.current.length;
@@ -371,14 +382,15 @@ export function MapView({ locations, client, media }: MapViewProps) {
     if (isRevealing && mapLoaded && mapRef.current && locations.length > 0 && !revealFired.current) {
       revealFired.current = true;
       const firstLocation = locations[0];
+      const isMobile = isMobileRef.current;
         setTimeout(() => {
           if (!mapRef.current) return;
           mapRef.current.flyTo({
             center: [firstLocation.longitude, firstLocation.latitude],
             zoom: 4.5,
-            pitch: 55,
+            pitch: isMobile ? 35 : 55,
             bearing: -15,
-            duration: 8000,
+            duration: isMobile ? 4000 : 8000,
             essential: true,
             easing: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
           });
@@ -399,14 +411,15 @@ export function MapView({ locations, client, media }: MapViewProps) {
   const prevJourneyStarted = useRef(false);
   useEffect(() => {
     if (!isJourneyStarted && prevJourneyStarted.current && mapRef.current && locations.length > 0) {
+      const isMobile = isMobileRef.current;
       setTimeout(() => {
         if (!mapRef.current) return;
           mapRef.current.flyTo({
             center: [locations[0].longitude, locations[0].latitude],
             zoom: 4.5,
-            pitch: 55,
+            pitch: isMobile ? 35 : 55,
             bearing: -15,
-            duration: 8000,
+            duration: isMobile ? 3500 : 8000,
             essential: true,
             easing: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
           });
@@ -676,7 +689,7 @@ export function MapView({ locations, client, media }: MapViewProps) {
               key={`overlay-${currentJourneyIndex}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0, y: -12, filter: 'blur(8px)' }}
+              exit={isMobileRef.current ? { opacity: 0, y: -12 } : { opacity: 0, y: -12, filter: 'blur(8px)' }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="fixed inset-0 flex flex-col items-center justify-start pt-24 md:pt-32 z-[52] pointer-events-none"
             >
@@ -738,23 +751,14 @@ export function MapView({ locations, client, media }: MapViewProps) {
               style={{ bottom: '22%' }}
             >
               <div className="relative">
-                <motion.div
-                  animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0.1, 0.5] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute inset-0 rounded-full bg-[#f5c542]/40 blur-xl"
-                />
+                {/* Static glow instead of blur-xl pulse — avoids GPU compositor strain */}
+                <div className="absolute inset-0 rounded-full bg-[#f5c542]/20" />
                 <motion.button
                   onClick={handleTogglePanel}
-                  whileHover={{ scale: 1.06 }}
                   whileTap={{ scale: 0.93 }}
                   onPointerDown={() => { if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(12); }}
-                  className="relative flex flex-col items-center gap-1 px-9 py-4 rounded-full text-sm font-black tracking-[0.2em] uppercase text-[#0a0a0f] bg-[#f5c542] shadow-[0_0_36px_rgba(245,197,66,0.55)] overflow-hidden"
+                  className="relative flex flex-col items-center gap-1 px-9 py-4 rounded-full text-sm font-black tracking-[0.2em] uppercase text-[#0a0a0f] bg-[#f5c542] shadow-[0_0_20px_rgba(245,197,66,0.4)] overflow-hidden"
                 >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-12"
-                    animate={{ x: ['-200%', '200%'] }}
-                    transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 1.2, ease: 'easeInOut' }}
-                  />
                   <span className="relative">Explore</span>
                   <span className="relative text-[9px] font-bold text-[#0a0a0f]/55 tracking-[0.1em] -mt-0.5">Tap to view story</span>
                 </motion.button>
@@ -840,12 +844,14 @@ export function MapView({ locations, client, media }: MapViewProps) {
                 const sig = isJourneyStarted
                   ? sigs[currentJourneyIndex % 6]
                   : { zoom: 13, pitch: 45 };
+                const isMobile = isMobileRef.current;
+                const mobilePitch = isMobile ? Math.max(30, sig.pitch - 25) : sig.pitch;
                 mapRef.current.flyTo({
                   center: [lng, lat],
                   zoom: sig.zoom,
-                  pitch: sig.pitch,
+                  pitch: mobilePitch,
                   bearing: 0,
-                  duration: 1200,
+                  duration: isMobile ? 800 : 1200,
                   essential: true,
                   easing: (t) => t * (2 - t),
                 });
